@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="Task 4.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1186"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="employees" custom_title="0" dock_id="1" table="4,9:mainemployees"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011300ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">SELECT * FROM employees;
+
+SELECT * FROM sales;
+
+-- Find all employees who earn more than the company's average salary.
+SELECT emp_name, salary 
+FROM employees
+WHERE salary &gt; (SELECT AVG(salary) FROM employees);
+
+
+
+-- Find the names of employees who have made at least one sale. 
+SELECT emp_name 
+FROM employees
+WHERE emp_id IN (SELECT emp_id FROM sales);
+
+
+-- Show every employee's name, their salary, and the company average right next to it.
+SELECT emp_name, 
+	    salary, 
+       (SELECT AVG(salary) FROM employees) AS company_avg
+FROM employees;
+
+
+-- Employees who have made a sale using EXISTS
+SELECT e.emp_name 
+FROM employees e
+WHERE EXISTS (SELECT 1 FROM sales s WHERE s.emp_id = e.emp_id);
+
+
+-- Highest Paid Employee using = and Scalar Subquery
+SELECT emp_name, salary 
+FROM employees
+WHERE salary = (SELECT MAX(salary) FROM employees);
+
+
+-- Show employee salary and the company average side-by-side
+SELECT emp_name, 
+       salary, 
+       (SELECT AVG(salary) FROM employees) AS company_avg
+FROM employees;
+
+-- Show employee name, salary, and difference from max salary
+SELECT emp_name, 
+       salary, 
+       (SELECT MAX(salary) FROM employees) - salary AS gap_from_top
+FROM employees;
+
+
+--  Top 3 highest-paid employees using a derived table
+SELECT * 
+FROM (
+    SELECT emp_name, salary 
+    FROM employees 
+    ORDER BY salary DESC
+) AS top_earners
+LIMIT 3;
+
+-- Correlated Subquery: Find the highest-paid employee in EACH department
+SELECT e1.emp_name, e1.department, e1.salary
+FROM employees e1
+WHERE salary = (
+    SELECT MAX(salary) 
+    FROM employees e2 
+    WHERE e2.department = e1.department
+);
+
+
+
+
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
