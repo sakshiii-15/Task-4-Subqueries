@@ -1,4 +1,4 @@
-# 🪆 Task 4 — Subqueries and Nested Queries
+# Task 4 — Subqueries and Nested Queries
 
 A hands-on SQL project demonstrating how to use **subqueries** (nested queries) to solve complex, multi-step data problems. This task covers scalar subqueries, multi-row subqueries, correlated subqueries, and derived tables in `SELECT`, `WHERE`, and `FROM` clauses.
 
